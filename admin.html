@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SLOCO&ndash;YSG &middot; Admin Dashboard</title>
+<link rel="icon" href="favicon.png" type="image/png">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Inter:wght@400;500;600;700;800&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="admin.css">
+</head>
+<body>
+
+<!-- ============ LOGIN GATE ============ -->
+<div class="login-screen" id="loginScreen">
+  <div class="login-card">
+    <div class="login-mark">
+      <img src="logo-crop.png" alt="">
+    </div>
+    <p class="login-eyebrow">SLOCO&ndash;YSG &middot; Staff Only</p>
+    <h1>Admin Dashboard</h1>
+    <p class="login-copy">Sign in with your office account to edit the website&rsquo;s content &mdash; programs, team, gallery, stats and more.</p>
+    <form id="loginForm">
+      <input type="email" id="loginEmail" placeholder="Email" autocomplete="username" required>
+      <input type="password" id="loginPassword" placeholder="Password" autocomplete="current-password" required>
+      <button type="submit" class="btn btn-primary btn-block btn-shine" id="loginSubmitBtn">Sign in</button>
+      <p class="login-error" id="loginError"></p>
+    </form>
+    <p class="login-hint">Don&rsquo;t have an account yet? An existing admin can add you in Supabase under Authentication &rarr; Users. <a href="#" id="showSecurityNote">How this works</a></p>
+  </div>
+</div>
+
+<!-- ============ SECURITY NOTE MODAL ============ -->
+<dialog id="securityDialog" class="app-dialog">
+  <h2>How this dashboard works</h2>
+  <p>This site's content lives in a Supabase database, not in files on GitHub:</p>
+  <ul>
+    <li><strong>Signing in</strong> uses real authentication (Supabase Auth) &mdash; your email and password are checked by Supabase, not stored in this site's code.</li>
+    <li><strong>Save changes</strong> writes directly to the live database. Every visitor sees your changes immediately &mdash; there's no separate "publish" step.</li>
+    <li><strong>Upload photo</strong> uploads the real file to Supabase Storage and uses it right away.</li>
+    <li>Only accounts you've explicitly added in Supabase (Authentication &rarr; Users) can sign in and save changes. Everyone else can only view the public site.</li>
+    <li><strong>Export content.json</strong> and <strong>Import JSON</strong> are optional convenience tools for taking a backup or bulk-restoring one &mdash; not required for normal editing.</li>
+  </ul>
+  <button class="btn btn-primary" id="closeSecurityDialog">Got it</button>
+</dialog>
+
+<!-- ============ APP SHELL ============ -->
+<div class="app-shell" id="appShell" hidden>
+
+  <aside class="app-sidebar">
+    <div class="sidebar-brand">
+      <img src="logo-crop.png" alt="">
+      <div>
+        <strong>SLOCO&ndash;YSG</strong>
+        <span>Admin Dashboard</span>
+      </div>
+    </div>
+    <nav class="sidebar-nav" id="sidebarNav"></nav>
+    <div class="sidebar-foot">
+      <span class="sidebar-user" id="sidebarUser"></span>
+      <a href="index.html" target="_blank" class="sidebar-view-site">View live site &rarr;</a>
+      <button class="sidebar-logout" id="logoutBtn">Log out</button>
+    </div>
+  </aside>
+
+  <div class="app-main">
+    <header class="app-topbar">
+      <div class="topbar-title">
+        <h1 id="panelTitle">Overview</h1>
+        <p id="panelSubtitle"></p>
+      </div>
+      <div class="topbar-actions">
+        <span class="dirty-pill" id="dirtyPill" hidden>Unsaved changes</span>
+        <button class="btn btn-outline" id="importBtn">Import JSON</button>
+        <input type="file" id="importFile" accept="application/json" hidden>
+        <button class="btn btn-outline" id="resetBtn">Reload from server</button>
+        <button class="btn btn-outline" id="exportBtn">Export content.json</button>
+        <button class="btn btn-primary btn-shine" id="saveBtn">Save changes</button>
+      </div>
+    </header>
+
+    <main class="app-panel" id="appPanel"></main>
+  </div>
+</div>
+
+<!-- ============ GENERIC ITEM MODAL ============ -->
+<dialog id="itemDialog" class="app-dialog item-dialog">
+  <form id="itemForm">
+    <h2 id="itemDialogTitle">Edit item</h2>
+    <div class="item-fields" id="itemFields"></div>
+    <div class="dialog-actions">
+      <button type="button" class="btn btn-outline" id="itemCancelBtn">Cancel</button>
+      <button type="submit" class="btn btn-primary">Save item</button>
+    </div>
+  </form>
+</dialog>
+
+<!-- ============ TOASTS ============ -->
+<div class="toast-stack" id="toastStack" aria-live="polite"></div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase-client.js"></script>
+<script src="data-store.js"></script>
+<script src="admin.js"></script>
+</body>
+</html>
