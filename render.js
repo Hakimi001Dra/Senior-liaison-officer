@@ -87,16 +87,16 @@
     root.querySelector(".leaders-heading").textContent = about.leadersHeading || "";
 
     var leaders = about.leaders || [];
-    document.getElementById("leadersGrid").innerHTML = leaders.map(function (l, i) {
+    document.getElementById("leadersGrid").innerHTML = leaders.map(function (l) {
       var photo = l.image
         ? '<img src="' + esc(l.image) + '" alt="' + esc(l.name) + '">'
-        : '<span class="leader-avatar-fallback" aria-hidden="true">' + esc(initials(l.name)) + '</span>';
+        : '<span class="profile-photo-fallback" aria-hidden="true">' + esc(initials(l.name)) + '</span>';
       var nameLine = esc(l.name) + (l.suffix ? ', <small>' + esc(l.suffix) + '</small>' : "");
-      var quote = l.quote ? '<p class="leader-quote">\u201C' + esc(l.quote) + '\u201D</p>' : "";
-      return '<div class="leader-card' + (i === 0 ? " leader-primary" : "") + '">' +
-        '<div class="leader-photo">' + photo + '</div>' +
-        '<div class="leader-info"><h4>' + nameLine + '</h4>' +
-        '<p class="leader-title">' + esc(l.title) + '</p>' + quote + '</div>' +
+      var quote = l.quote ? '<p class="profile-quote">\u201C' + esc(l.quote) + '\u201D</p>' : "";
+      return '<div class="profile-card">' +
+        '<div class="profile-photo">' + photo + '</div>' +
+        '<div class="profile-caption"><h4 class="profile-name">' + nameLine + '</h4>' +
+        '<p class="profile-role">' + esc(l.title) + '</p>' + quote + '</div>' +
         '</div>';
     }).join("");
   }
@@ -174,17 +174,20 @@
     root.querySelector(".lede").textContent = team.lede;
 
     document.getElementById("teamGrid").innerHTML = team.members.map(function (m) {
-      var cls = "team-card" + (m.isLead ? " lead-card" : "");
-      var tag = m.isLead ? '<span class="team-role-tag">Office Head</span>' : "";
-      var avatar = m.photo
-        ? '<img class="team-avatar" src="' + esc(m.photo) + '" alt="">'
-        : '<span class="team-avatar team-avatar-fallback" aria-hidden="true">' + esc(initials(m.name)) + '</span>';
-      var nameLine = esc(m.name) + (m.suffix ? ' <small>' + esc(m.suffix) + '</small>' : "");
+      var badge = m.isLead ? '<span class="profile-badge">Office Head</span>' : "";
+      var photo = m.photo
+        ? '<img src="' + esc(m.photo) + '" alt="' + esc(m.name) + '">'
+        : '<span class="profile-photo-fallback" aria-hidden="true">' + esc(initials(m.name)) + '</span>';
+      var nameLine = esc(m.name) + (m.suffix ? ', <small>' + esc(m.suffix) + '</small>' : "");
       var contacts = "";
       if (m.phone) contacts += '<a href="tel:' + esc(m.phone) + '">' + formatPhone(m.phone) + '</a>';
       if (m.email) contacts += '<a href="mailto:' + esc(m.email) + '">' + esc(m.email) + '</a>';
-      return '<div class="' + cls + '">' + tag + avatar + '<h3>' + nameLine + '</h3><p>' +
-        esc(m.role) + '</p>' + contacts + '</div>';
+      return '<div class="profile-card">' +
+        '<div class="profile-photo">' + badge + photo + '</div>' +
+        '<div class="profile-caption"><h4 class="profile-name">' + nameLine + '</h4>' +
+        '<p class="profile-role">' + esc(m.role) + '</p>' +
+        (contacts ? '<div class="profile-contacts">' + contacts + '</div>' : "") + '</div>' +
+        '</div>';
     }).join("");
   }
 
@@ -354,7 +357,7 @@
   }
 
   function initTilt() {
-    var cards = document.querySelectorAll(".mvv-card, .team-card, .gallery-item, .partners-strip span");
+    var cards = document.querySelectorAll(".mvv-card, .gallery-item, .partners-strip span");
     cards.forEach(function (card) {
       if (card.__tiltBound) return;
       card.__tiltBound = true;
