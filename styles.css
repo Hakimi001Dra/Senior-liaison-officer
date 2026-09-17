@@ -288,46 +288,43 @@ p{ margin: 0 0 1em; }
 .leaders-heading{ font-size: clamp(1.3rem, 2.2vw, 1.7rem); max-width: 36ch; margin-bottom: 32px; }
 .leaders-grid{ display:grid; grid-template-columns: 1fr 1fr; gap: 24px; }
 
-.leader-card{
-  display:flex; gap: 20px; align-items:flex-start;
+/* ---- Shared portrait-card: photo on top, name/title band below.
+   Used for both Leadership profiles and the Team directory, so the
+   whole site's people all read as one consistent, professional set. ---- */
+.profile-card{
+  display:flex; flex-direction:column;
   background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 28px; box-shadow: var(--shadow-card); position:relative; overflow:hidden;
+  overflow:hidden; box-shadow: var(--shadow-card); position:relative;
   transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out);
 }
-.leader-card:hover{ transform: translateY(-4px); box-shadow: var(--shadow-card-hover); }
-.leader-card.leader-primary{ background: var(--green-deep); border-color: transparent; color: var(--paper); }
-.leader-card.leader-primary::after{
-  content:""; position:absolute; inset:0; opacity:0.5; pointer-events:none;
-  background: radial-gradient(70% 70% at 100% 0%, rgba(255,178,56,0.18), transparent 60%);
-}
+.profile-card:hover{ transform: translateY(-5px); box-shadow: var(--shadow-card-hover); }
 
-.leader-photo{
-  flex-shrink:0; width: 92px; height: 92px; border-radius:50%; overflow:hidden;
-  box-shadow: 0 6px 18px -6px rgba(0,0,0,0.35); position:relative;
-}
-.leader-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
-.leader-avatar-fallback{
+.profile-photo{ position:relative; width:100%; aspect-ratio: 4 / 5; overflow:hidden; background: var(--sand-deep); }
+.profile-photo img{ width:100%; height:100%; object-fit:cover; display:block; transition: transform .5s var(--ease-out); }
+.profile-card:hover .profile-photo img{ transform: scale(1.05); }
+.profile-photo-fallback{
   width:100%; height:100%; display:flex; align-items:center; justify-content:center;
   background: var(--gradient-cool); color: var(--paper);
-  font-family: var(--font-display); font-weight:700; font-size: 1.5rem;
+  font-family: var(--font-display); font-weight:700; font-size: 2.2rem;
 }
-.leader-primary .leader-avatar-fallback{ background: var(--gradient-warm); color: #2A1400; }
+.profile-badge{
+  position:absolute; top:14px; left:14px; z-index:2;
+  font-family: var(--font-mono); font-size: 0.64rem; text-transform:uppercase; letter-spacing:0.05em;
+  background: var(--gradient-warm); color: #2A1400; padding: 5px 11px; border-radius:999px; font-weight:700;
+  box-shadow: 0 4px 10px -4px rgba(0,0,0,0.4);
+}
 
-.leader-info{ position:relative; min-width:0; }
-.leader-info h4{
-  font-family: var(--font-display); font-size: 1.15rem; font-weight:600; margin: 0 0 4px; line-height:1.25;
+.profile-caption{ background: var(--green-deep); color: var(--paper); padding: 18px 20px 20px; flex:1; }
+.profile-name{ font-family: var(--font-display); font-size: 1.08rem; font-weight:600; margin: 0 0 3px; line-height:1.25; }
+.profile-name small{ font-weight:400; font-size: 0.64rem; font-family: var(--font-mono); opacity:0.65; }
+.profile-role{ font-size: 0.8rem; color: rgba(251,247,236,0.72); margin:0; line-height:1.5; }
+.profile-quote{
+  margin: 12px 0 0; font-family: var(--font-display); font-style:italic; font-size: 0.88rem; line-height:1.5;
+  border-left: 2px solid var(--grad-1); padding-left: 10px; color: rgba(251,247,236,0.92);
 }
-.leader-info h4 small{ font-weight:400; font-size: 0.68rem; font-family: var(--font-mono); opacity:0.7; }
-.leader-title{
-  font-family: var(--font-mono); font-size: 0.7rem; text-transform:uppercase; letter-spacing:0.04em;
-  color: var(--ink-soft); margin: 0 0 14px; line-height:1.5;
-}
-.leader-primary .leader-title{ color: rgba(251,247,236,0.72); }
-.leader-quote{
-  font-family: var(--font-display); font-style:italic; font-size: 0.92rem; line-height:1.5; margin:0;
-  border-left: 2px solid var(--grad-2); padding-left: 12px; color: var(--ink);
-}
-.leader-primary .leader-quote{ color: rgba(251,247,236,0.92); border-left-color: var(--grad-1); }
+.profile-contacts{ display:flex; flex-direction:column; gap:3px; margin-top: 10px; }
+.profile-contacts a{ font-size: 0.78rem; color: var(--grad-1); text-decoration:none; font-weight:600; }
+.profile-contacts a:hover{ color: var(--paper); text-decoration:underline; }
 
 /* ===================== LEDGER (Impact) ===================== */
 .ledger{ background: var(--green-deep); color: var(--paper); overflow:hidden; position:relative; }
@@ -429,45 +426,7 @@ p{ margin: 0 0 1em; }
 .gallery-item:hover::after{ opacity:1; }
 
 /* ===================== TEAM ===================== */
-.team-grid{ margin-top: 40px; display:grid; grid-template-columns: repeat(3,1fr); gap: 16px; }
-.team-card{
-  --tilt-x: 0deg; --tilt-y: 0deg; --glow-x: 50%; --glow-y: 50%;
-  background: var(--paper); border: 1px solid var(--line); border-radius: var(--radius);
-  padding: 20px; box-shadow: var(--shadow-card); position:relative; overflow:hidden;
-  transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y));
-  transition: transform .35s var(--ease-out), box-shadow .35s var(--ease-out);
-}
-.team-card::before{
-  content:""; position:absolute; inset:0; opacity:0; pointer-events:none;
-  background: radial-gradient(200px circle at var(--glow-x) var(--glow-y), rgba(124,77,255,0.14), transparent 60%);
-  transition: opacity .3s ease;
-}
-.team-card:hover{ box-shadow: var(--shadow-card-hover); transform: perspective(700px) rotateX(var(--tilt-x)) rotateY(var(--tilt-y)) translateY(-3px); }
-.team-card:hover::before{ opacity:1; }
-.team-avatar{
-  width: 46px; height:46px; border-radius:50%; object-fit:cover; margin-bottom:12px;
-  border: 2px solid var(--sand-deep); position:relative;
-}
-.team-avatar-fallback{
-  display:flex; align-items:center; justify-content:center;
-  background: var(--gradient-warm); color: #2A1400; font-family: var(--font-display);
-  font-weight:700; font-size: 1rem; border-color: transparent;
-}
-.lead-card .team-avatar-fallback{ background: var(--gradient-cool); color: var(--paper); }
-.lead-card .team-avatar{ border-color: rgba(251,247,236,0.35); }
-.team-card h3{ font-size: 1rem; margin-bottom: 6px; position:relative; }
-.team-card h3 small{ font-family: var(--font-mono); font-weight:400; font-size:0.7rem; color: var(--ink-soft); }
-.team-card p{ font-size: 0.86rem; color: var(--ink-soft); margin: 0 0 10px; position:relative; }
-.team-card a{ display:block; font-size: 0.84rem; color: var(--green); text-decoration:none; font-weight:600; position:relative; }
-.team-card a:hover{ text-decoration:underline; color: var(--grad-2); }
-.lead-card{ background: var(--green-deep); color: var(--paper); position:relative; }
-.lead-card::before{ background: radial-gradient(200px circle at var(--glow-x) var(--glow-y), rgba(255,178,56,0.22), transparent 60%); }
-.lead-card h3{ color: var(--paper); }
-.lead-card p{ color: rgba(251,247,236,0.82); }
-.team-role-tag{
-  display:inline-block; font-family: var(--font-mono); font-size:0.68rem; text-transform:uppercase;
-  color: #2A1400; background: var(--gradient-warm); padding: 4px 10px; border-radius:999px; margin-bottom: 12px; position:relative;
-}
+.team-grid{ margin-top: 40px; display:grid; grid-template-columns: repeat(3,1fr); gap: 20px; }
 
 /* ===================== REPORT ===================== */
 .report{ background: var(--green-deep); color: var(--paper); position:relative; overflow:hidden; }
@@ -568,7 +527,6 @@ p{ margin: 0 0 1em; }
 
   .section{ padding: 64px 0; }
   .mvv-grid{ grid-template-columns: 1fr; }
-  .leader-card{ flex-direction:column; align-items:flex-start; }
   .team-grid{ grid-template-columns: 1fr; }
   .ledger-row{ grid-template-columns: 1fr; gap: 6px; }
   .reg-head{ grid-template-columns: 32px 1fr 20px; }
