@@ -87,18 +87,53 @@
     root.querySelector(".leaders-heading").textContent = about.leadersHeading || "";
 
     var leaders = about.leaders || [];
-    document.getElementById("leadersGrid").innerHTML = leaders.map(function (l) {
+    document.getElementById("leadersGrid").innerHTML = leaders.map(function (l, i) {
       var photo = l.image
         ? '<img src="' + esc(l.image) + '" alt="' + esc(l.name) + '">'
         : '<span class="profile-photo-fallback" aria-hidden="true">' + esc(initials(l.name)) + '</span>';
       var nameLine = esc(l.name) + (l.suffix ? ', <small>' + esc(l.suffix) + '</small>' : "");
       var quote = l.quote ? '<p class="profile-quote">\u201C' + esc(l.quote) + '\u201D</p>' : "";
-      return '<div class="profile-card">' +
+      var hasBio = l.bio && l.bio.trim();
+      var readMore = hasBio ? '<button type="button" class="profile-readmore">Read more &rarr;</button>' : "";
+      return '<div class="profile-card' + (hasBio ? ' is-clickable' : '') + '"' +
+        (hasBio ? ' data-leader-i="' + i + '"' : '') + '>' +
         '<div class="profile-photo">' + photo + '</div>' +
         '<div class="profile-caption"><h4 class="profile-name">' + nameLine + '</h4>' +
-        '<p class="profile-role">' + esc(l.title) + '</p>' + quote + '</div>' +
+        '<p class="profile-role">' + esc(l.title) + '</p>' + quote + readMore + '</div>' +
         '</div>';
     }).join("");
+
+    document.querySelectorAll("#leadersGrid [data-leader-i]").forEach(function (card) {
+      card.addEventListener("click", function () {
+        openBioDialog(leaders[Number(card.getAttribute("data-leader-i"))]);
+      });
+    });
+  }
+
+  function openBioDialog(leader) {
+    var dialog = document.getElementById("bioDialog");
+    var photoEl = document.getElementById("bioDialogPhoto");
+    photoEl.innerHTML = leader.image
+      ? '<img src="' + esc(leader.image) + '" alt="' + esc(leader.name) + '">'
+      : '<span class="profile-photo-fallback" aria-hidden="true">' + esc(initials(leader.name)) + '</span>';
+    document.getElementById("bioDialogName").innerHTML =
+      esc(leader.name) + (leader.suffix ? ', <small>' + esc(leader.suffix) + '</small>' : "");
+    document.getElementById("bioDialogTitle").textContent = leader.title || "";
+    var paragraphs = (leader.bio || "").split(/\n\s*\n/).map(function (p) { return p.trim(); }).filter(Boolean);
+    document.getElementById("bioDialogText").innerHTML = paragraphs.map(function (p) {
+      return "<p>" + esc(p).replace(/\n/g, "<br>") + "</p>";
+    }).join("");
+    dialog.showModal();
+  }
+
+  function wireBioDialog() {
+    var dialog = document.getElementById("bioDialog");
+    if (!dialog) return;
+    document.getElementById("bioDialogClose").addEventListener("click", function () { dialog.close(); });
+    dialog.addEventListener("click", function (e) {
+      var r = dialog.getBoundingClientRect();
+      if (e.clientX < r.left || e.clientX > r.right || e.clientY < r.top || e.clientY > r.bottom) dialog.close();
+    });
   }
 
   function renderLedger(ledger) {
@@ -354,6 +389,7 @@
 
     // card tilt / magnetic hover on interactive cards
     initTilt();
+    wireBioDialog();
   }
 
   function initTilt() {
