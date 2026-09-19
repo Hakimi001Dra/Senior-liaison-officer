@@ -328,7 +328,8 @@
       { key: "name", label: "Full name", type: "text", required: true },
       { key: "suffix", label: "Suffix / honorific (e.g. CON, SDMSS)", type: "text" },
       { key: "title", label: "Title / role", type: "text", required: true },
-      { key: "quote", label: "Quote or short message (optional)", type: "textarea" }
+      { key: "quote", label: "Quote or short message (optional)", type: "textarea" },
+      { key: "bio", label: "Full biography (optional) — shown when someone clicks \u201CRead more\u201D on the public site. Leave a blank line between paragraphs.", type: "textarea", big: true }
     ];
   }
 
