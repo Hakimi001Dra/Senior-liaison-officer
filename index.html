@@ -222,6 +222,17 @@
   </div>
 </footer>
 
+<!-- ============ LEADER BIO DIALOG ============ -->
+<dialog id="bioDialog" class="bio-dialog">
+  <button class="bio-dialog-close" id="bioDialogClose" aria-label="Close">&times;</button>
+  <div class="bio-dialog-photo" id="bioDialogPhoto"></div>
+  <div class="bio-dialog-body">
+    <h3 id="bioDialogName"></h3>
+    <p class="bio-dialog-title" id="bioDialogTitle"></p>
+    <div class="bio-dialog-text" id="bioDialogText"></div>
+  </div>
+</dialog>
+
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <script src="supabase-client.js"></script>
 <script src="data-store.js"></script>
