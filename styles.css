@@ -326,6 +326,40 @@ p{ margin: 0 0 1em; }
 .profile-contacts a{ font-size: 0.78rem; color: var(--grad-1); text-decoration:none; font-weight:600; }
 .profile-contacts a:hover{ color: var(--paper); text-decoration:underline; }
 
+.profile-card.is-clickable{ cursor: pointer; }
+.profile-readmore{
+  display:inline-flex; align-items:center; gap:5px; margin-top: 14px;
+  background:none; border:none; padding:0; font-family: var(--font-mono); font-size: 0.72rem;
+  text-transform:uppercase; letter-spacing:0.03em; color: var(--grad-1); cursor:pointer; font-weight:700;
+  transition: gap .2s ease, color .2s ease;
+}
+.profile-readmore:hover{ color: var(--paper); gap: 8px; }
+
+/* ---- Leader bio dialog ---- */
+.bio-dialog{
+  border:none; border-radius: 18px; padding:0; max-width: 640px; width: 92vw; max-height: 86vh;
+  overflow:hidden; box-shadow: 0 40px 90px -20px rgba(0,0,0,0.5);
+}
+.bio-dialog::backdrop{ background: rgba(11,54,32,0.6); backdrop-filter: blur(4px); }
+.bio-dialog-close{
+  position:absolute; top:16px; right:16px; z-index:3; width:36px; height:36px; border-radius:50%;
+  background: rgba(251,247,236,0.92); border:none; font-size:1.3rem; line-height:1; cursor:pointer; color: var(--ink);
+  display:flex; align-items:center; justify-content:center; transition: background .2s ease, transform .2s ease;
+}
+.bio-dialog-close:hover{ background: var(--paper); transform: scale(1.06); }
+.bio-dialog-photo{ width:100%; aspect-ratio: 16 / 7; overflow:hidden; background: var(--sand-deep); position:relative; }
+.bio-dialog-photo img{ width:100%; height:100%; object-fit:cover; display:block; }
+.bio-dialog-photo .profile-photo-fallback{ width:100%; height:100%; font-size: 2.6rem; }
+.bio-dialog-body{ padding: 26px 30px 32px; max-height: 58vh; overflow-y:auto; }
+.bio-dialog-body h3{ font-family: var(--font-display); font-size: 1.4rem; margin: 0 0 4px; }
+.bio-dialog-body h3 small{ font-weight:400; font-size: 0.72rem; font-family: var(--font-mono); color: var(--ink-soft); }
+.bio-dialog-title{
+  font-family: var(--font-mono); font-size: 0.76rem; text-transform:uppercase; letter-spacing:0.04em;
+  color: var(--ink-soft); margin: 0 0 18px;
+}
+.bio-dialog-text p{ font-size: 0.96rem; color: var(--ink-soft); line-height:1.75; margin: 0 0 14px; }
+.bio-dialog-text p:last-child{ margin-bottom:0; }
+
 /* ===================== LEDGER (Impact) ===================== */
 .ledger{ background: var(--green-deep); color: var(--paper); overflow:hidden; position:relative; }
 .ledger::before{
